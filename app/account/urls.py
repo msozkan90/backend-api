@@ -16,5 +16,6 @@ urlpatterns = [
     path('profile/<int:pk>/', views.UserDetailView.as_view(), name='profile-detail'),
     path('token/', TokenObtainPairView.as_view(), name='token'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('breweries', views.BreweryListView.as_view(), name='brewery-list'),
 
 ]
