@@ -2,6 +2,7 @@ import graphene
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth.models import User
 import requests
+from graphql_jwt.decorators import login_required
 
 class BreweryType(graphene.ObjectType):
     id = graphene.String()
@@ -28,11 +29,15 @@ class UserType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
+    viewer = graphene.Field(UserType, token=graphene.String(required=True))
     users = graphene.List(UserType)
     breweries = graphene.List(BreweryType, query=graphene.String())
+
+    @login_required
     def resolve_users(self, info):
         return User.objects.all()
-
+    
+    @login_required
     def resolve_breweries(self, info, query=None):
         url = 'https://api.openbrewerydb.org/v1/breweries/'
 
@@ -70,5 +75,17 @@ class Query(graphene.ObjectType):
             return breweries
         except requests.exceptions.RequestException as e:
             return []
-        
-schema = graphene.Schema(query=Query)
+
+
+import graphene
+import graphql_jwt
+
+
+class Mutation(graphene.ObjectType):
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
+

@@ -3,7 +3,7 @@ Views for the user API.
 """
 
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
 import requests
@@ -12,21 +12,24 @@ from rest_framework.response import Response
 from rest_framework import status
 from drf_spectacular.utils import (
     OpenApiParameter,
-    extend_schema_view,
     extend_schema,
-    OpenApiTypes,
 )
+from account.consts import brewery_example
 
 
-class UserListCreateView(generics.ListCreateAPIView):
+class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
 
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated,)
+
+
+class UserCreateView(generics.CreateAPIView):
+    serializer_class = UserSerializer
 
 
 class BreweryListView(APIView):
@@ -44,27 +47,7 @@ class BreweryListView(APIView):
         responses={
             status.HTTP_200_OK: {
                 'description': 'Brewery data',
-                'example': [
-                       {
-                        "id": "5128df48-79fc-4f0f-8b52-d06be54d0cec",
-                        "name": "(405) Brewing Co",
-                        "brewery_type": "micro",
-                        "address_1": "1716 Topeka St",
-                        "address_2": None,
-                        "address_3": None,
-                        "city": "Norman",
-                        "state_province": "Oklahoma",
-                        "postal_code": "73069-8224",
-                        "country": "United States",
-                        "longitude": "-97.46818222",
-                        "latitude": "35.25738891",
-                        "phone": "4058160490",
-                        "website_url": "http://www.405brewing.com",
-                        "state": "Oklahoma",
-                        "street": "1716 Topeka St"
-                    },
-                    # Add more example objects if needed
-                ],
+                'example': [brewery_example,],
             },
             status.HTTP_500_INTERNAL_SERVER_ERROR: {
                 'description': 'An error occurred while fetching data.',
