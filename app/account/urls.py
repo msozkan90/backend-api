@@ -2,7 +2,8 @@
 URL mappings for the user API.
 """
 from django.urls import path
-
+from graphene_django.views import GraphQLView
+from account.schema import schema  # Oluşturduğunuz schema'yı ekleyin
 from account import views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,

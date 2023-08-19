@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'account',
     'core',
+    'graphene_django',
+
 ]
 
 MIDDLEWARE = [
@@ -172,3 +174,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+GRAPHENE = {
+    'SCHEMA': 'account.schema.schema'
+}
+
