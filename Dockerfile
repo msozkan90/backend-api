@@ -21,12 +21,12 @@ RUN python -m venv /py && \
         --disabled-password \
         --no-create-home \
         django-user && \
+    chown -R django-user:django-user /app && \
+    chmod +x /app/manage.py && \
     mkdir -p /vol/web/media && \
     mkdir -p /vol/web/static && \
     chown -R django-user:django-user /vol && \
-    # changing the owner of the folder to django-user -R for recursive
     chmod -R 755 /vol
-    # change mode to 755 permission
 
 # this path for environment variables
 ENV PATH="/py/bin:$PATH"
