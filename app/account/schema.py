@@ -2,25 +2,29 @@ import graphene
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth.models import User
 import requests
-from graphql_jwt.decorators import login_required
+
+# Define the GraphQL type for a brewery
+
 
 class BreweryType(graphene.ObjectType):
-    id = graphene.String()
-    name = graphene.String()
-    brewery_type = graphene.String()
-    address_1 = graphene.String()
-    address_2 = graphene.String()
-    address_3 = graphene.String()
-    city = graphene.String()
-    state_province = graphene.String()
-    postal_code = graphene.String()
-    country = graphene.String()
-    longitude = graphene.String()
-    latitude = graphene.String()
-    phone = graphene.String()
-    website_url = graphene.String()
-    state = graphene.String()
-    street = graphene.String()
+    id = graphene.String(description="ID of the brewery")
+    name = graphene.String(description="Name of the brewery")
+    brewery_type = graphene.String(description="Type of the brewery")
+    address_1 = graphene.String(description="Address line 1")
+    address_2 = graphene.String(description="Address line 2")
+    address_3 = graphene.String(description="Address line 3")
+    city = graphene.String(description="City of the brewery")
+    state_province = graphene.String(description="State or province")
+    postal_code = graphene.String(description="Postal code")
+    country = graphene.String(description="Country of the brewery")
+    longitude = graphene.String(description="Longitude coordinates")
+    latitude = graphene.String(description="Latitude coordinates")
+    phone = graphene.String(description="Phone number")
+    website_url = graphene.String(description="Website URL")
+    state = graphene.String(description="State")
+    street = graphene.String(description="Street name")
+
+# Define the GraphQL type for a Django User
 
 
 class UserType(DjangoObjectType):
@@ -29,16 +33,22 @@ class UserType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    viewer = graphene.Field(UserType, token=graphene.String(required=True))
+    # Retrieve all users
     users = graphene.List(UserType)
+
+    # Retrieve breweries with optional query parameter
     breweries = graphene.List(BreweryType, query=graphene.String())
 
-    @login_required
     def resolve_users(self, info):
+        """
+        Resolve the 'users' query to fetch all users.
+        """
         return User.objects.all()
-    
-    @login_required
+
     def resolve_breweries(self, info, query=None):
+        """
+        Resolve the 'breweries' query to fetch breweries from an external API.
+        """
         url = 'https://api.openbrewerydb.org/v1/breweries/'
 
         if query:
@@ -68,7 +78,6 @@ class Query(graphene.ObjectType):
                     website_url=item['website_url'],
                     state=item['state'],
                     street=item['street']
-                    # Diğer alanları da burada ekleyin
                 )
                 breweries.append(brewery)
 
@@ -77,15 +86,5 @@ class Query(graphene.ObjectType):
             return []
 
 
-import graphene
-import graphql_jwt
-
-
-class Mutation(graphene.ObjectType):
-    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
-    verify_token = graphql_jwt.Verify.Field()
-    refresh_token = graphql_jwt.Refresh.Field()
-
-
-schema = graphene.Schema(query=Query, mutation=Mutation)
-
+# Create a GraphQL schema
+schema = graphene.Schema(query=Query)

@@ -4,19 +4,19 @@ Django settings for app project.
 """
 from datetime import timedelta
 from pathlib import Path
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--%go&%)=8$k91ser-_6t5d^$v9oq^5l@7a#c-w1oxm%3-l@zhl'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = ["*"]
 
@@ -128,7 +128,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTHENTICATION_BACKENDS = [
-    "graphql_jwt.backends.JSONWebTokenBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 
@@ -175,17 +174,4 @@ SIMPLE_JWT = {
 
 GRAPHENE = {
     'SCHEMA': 'account.schema.schema',
-
-    "MIDDLEWARE": [
-        "graphql_jwt.middleware.JSONWebTokenMiddleware",
-    ],
-}
-
-GRAPHQL_JWT = {
-    "JWT_ALLOW_ANY_CLASSES": (
-        "graphql_jwt.utils.jwt_get_user",
-    ),
-    "JWT_VERIFY_EXPIRATION": True,  # JWT tokenin sona erme süresini doğrula
-    "JWT_EXPIRATION_DELTA": timedelta(minutes=60),  # JWT tokenin sona erme süresi
-    # Diğer ayarları buraya ekleyebilirsiniz
 }
