@@ -1,4 +1,4 @@
-# BREWERIES API
+## BREWERIES API
 
 ## Tech Stack
 - Django
@@ -27,6 +27,8 @@ pip install -r requirements.txt
 
 
 ## Usage
+
+- For Documentation [redoc](http://localhost:8000/redoc)
 
 - Open [swagger](http://localhost:8000/api/swagger)
 
