@@ -28,9 +28,9 @@ pip install -r requirements.txt
 
 ## Usage
 
-- For Documentation [redoc](http://localhost:8000/redoc)
+- For Documentation [redoc](http://localhost:8000/redoc) (local) [redoc](https://msozkan.pythonanywhere.com/redoc) (live)
 
-- Open [swagger](http://localhost:8000/api/swagger)
+- Open [swagger](http://localhost:8000/api/swagger) (local) [swagger](https://msozkan.pythonanywhere.com/api/swagger) (live)
 
 - Create account on swagger /register request
 
@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 - After login successfully you can request every endpoint on swagger
 
-- You can also request these url on [grqphql](http://localhost:8000/graphql)
+- You can also request these url on [grqphql](http://localhost:8000/graphql) (local) [grqphql](https://msozkan.pythonanywhere.com/graphql) (live)
 
 ### Restrictions
 - You can make every request with user token.
@@ -54,4 +54,7 @@ pip install -r requirements.txt
 - Logical logs for users
 - Clean code and code explanaiton
 - Easy test with on swagger
+
+### IMPORTANT NOTE
+- It gives an error (Tunnel connection failed: 403 Forbidden) because the https://www.openbrewerydb.org/ api is not in the whitelist of pythoanywhere. I made a request to add it to the whitelist, but no response yet. I am sharing it this way for your information because the task delivery period is about to end.
 
