@@ -56,5 +56,5 @@ pip install -r requirements.txt
 - Easy test with on swagger
 
 ### IMPORTANT NOTE
-- It gives an error (Tunnel connection failed: 403 Forbidden) because the https://www.openbrewerydb.org/ api is not in the whitelist of pythoanywhere. I made a request to add it to the whitelist, but no response yet. I am sharing it this way for your information because the task delivery period is about to end.
+- In live, it gives an error (Tunnel connection failed: 403 Forbidden) because the https://www.openbrewerydb.org/ api is not in the whitelist of pythoanywhere. I made a request to add it to the whitelist, but no response yet. I am sharing it this way for your information because the task delivery period is about to end.
 
